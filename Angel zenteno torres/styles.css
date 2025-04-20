@@ -1,0 +1,29 @@
+h1 {
+
+    font-size: 60px;
+    color: rgb(225, 99, 71);
+
+
+}
+
+
+
+.Centrado{
+    text-align: center;
+    font-size: 60px;
+    color:blue;
+
+    
+}
+
+P.noticia {
+    font-size: 60px;
+    color: red;
+
+
+}
+
+#titulo { 
+    font-size: 60px;
+
+}
