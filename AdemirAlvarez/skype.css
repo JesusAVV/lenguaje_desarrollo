@@ -1,0 +1,29 @@
+/* Este es un comentario en css*/
+
+h1 { 
+    font-size:60px;
+    color:rgb(38, 170, 159);
+
+}
+.centrado {
+    text-align: center;
+    font-size: 10em;
+    color: aqua;
+
+}
+
+.noticia {
+    font-size: 8em;
+    color: rgb(237, 0, 0);
+}
+#titulo {
+    font-size: 25px;
+    color:orange;
+
+}
+
+#tema_prueba {
+    font-size: 25px;
+    color: rgb(228, 13, 164);
+
+}
