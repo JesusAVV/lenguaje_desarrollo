@@ -1,0 +1,19 @@
+/* Esto es un comentario en CSS */
+h1 {
+    font-size: 60px; /*Declaracion css 1 */
+    color: blue; /*Declaracion css 2 */
+}
+
+.centrado {
+    text-align: center;
+}
+
+p.noticia {
+    font-size: 60px;
+    color: red;
+}
+
+#titulo {
+    font-size: 60px;
+    color: orange;
+}
