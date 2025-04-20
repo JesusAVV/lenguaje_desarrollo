@@ -1,0 +1,22 @@
+/*Este es un archivo*/
+h1{
+    font-size:  60px;
+    color: blue;
+    text-align: center;
+}
+
+.centrado {
+    text-align: center;
+    font-size: 60px;
+    color: blue;
+}
+
+p.noticia {
+    font-size: 60px;
+    color: red;
+}
+
+#titulo {
+    font-size: 60px;
+    color: orange;
+}
