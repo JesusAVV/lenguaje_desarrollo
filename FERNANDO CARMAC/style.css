@@ -1,0 +1,31 @@
+/* este es un comentario en css*/
+
+h1 {
+    font: size 60em;
+    color:rgb(126, 28, 121);
+}
+.centrado {
+    text-align: center;
+    font-size: 60px;
+    color:chartreuse;
+    
+}
+.centrado {
+    text-align: center;
+    font-size: 60px;
+    color:chartreuse;
+    
+}
+
+p.noticia {
+    font-size: 60px;
+    color: rgb(98, 18, 202);
+
+}
+
+#lenguaje{
+    font-size: 60px;
+    color: blueviolet;
+
+    
+}
