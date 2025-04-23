@@ -1,0 +1,23 @@
+* Este es un comentario en css*/
+
+h1 { 
+    font-size:60px;
+    color:rgba(224, 212, 154, 0.753);
+
+}
+.centrado {
+    text-align: center;
+    font-size: 10em;
+    color: rgb(46, 133, 133);
+
+}
+
+.noticia {
+    font: size 15em;
+    color: rgb(255, 45, 45);
+}
+
+#titulo {   
+    font-size: 60px;
+    color: orange;
+}
