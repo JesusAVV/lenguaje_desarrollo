@@ -1,8 +1,8 @@
 /* Este es un comentario en CSS */
-
 h1 {
     font-size: 60px;
-    color: rgb(255, 99, 71);
+    color: rgb(22, 25, 26);
+    margin-bottom: 60px;
 }
 
 .centrado {
