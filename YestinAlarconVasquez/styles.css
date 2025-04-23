@@ -4,6 +4,11 @@ h1{
     color: blue;
     text-align: center;
 }
+.insidediv{
+    font-style: italic;
+    color: antiquewhite;
+
+}
 
 .centrado {
     text-align: center;
@@ -20,3 +25,9 @@ p.noticia {
     font-size: 60px;
     color: orange;
 }
+
+body{
+    background-image: url(recursos/download.gif);
+    background-size: cover;
+}
+
