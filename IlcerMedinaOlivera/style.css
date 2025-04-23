@@ -1,8 +1,11 @@
 /* Este es un comentario en css */
+body{
+    background-color: #0d5fb7;
+}
 
 h1 {
     font-size: 60px;
-    color: blue;
+    color: rgb(10, 100, 174);
 }
 
 .centrado {
