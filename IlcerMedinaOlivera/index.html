@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
 
 </head>
-
+  <!--  
 <body background="imagenes/fondo hielo.avif">
      
     <h1>Este es un encabezado tipo 1</h1>
@@ -62,6 +62,113 @@
     <img style="display: block; margin-left: auto; margin-right: auto; width: 30%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCB3ALaVd-KnYkXJh9I7ngY-h_9BpbYCCv6M36QKN6Lg&s&ec=72940543" alt="logo de Certus">
     <div style="padding: 40PX 0PX; border: 5px solid blue;">Bienvenidos a Certus</div>
 </div>
+</body>
+
+
+ 
+<body>
+    <h1>Pagina de Bienvenida</h1>
+    <p>Este es unparrafo</p>
+
+
+    <script>
+        window.alert("Bienvenido a Certus");
+    </script>
+
+ 
+
+
+<div id="resultado"></div>
+<script>
+    var valor1 = 10;
+    var valor2 = 30;
+    var calculo = valor1/2 + vaor2*5 - 100;
+    document.getElementById('resultado').innerHTML="resultado:" + calculo;
+
+</script>
+ 
+ 
+<h1>Pagina de Bienvenida</h1>
+<p id="mensaje" style="color: red;">Este es un parrafo</p>
+<script>
+
+    document.getElementById('mensaje').innerHTML="Certus";
+    document.write("<divstyle=´backgroum-color:red#776199;´>Bienvenido </div>");
+    window.alert('Bienvenido a Certus')
+    console.log('mensaje en la consola del navegador');
+
+
+</script>
+ --
+
+<div id="resultado"></div>
+<script>
+    var valores = [10, 30, 40, 20];
+    
+    var resultado = valores[0] + valores[1] + valores[2] + valores[3];
+    document.getElementById('resultado').innerHTML="Resultado: " + resultado;
+
+</script>
+
+<div id="resultado"></div>
+<div id="resultado_2"></div>
+<div id="resultado_3"></div>
+
+<script>
+
+var elemenntos = ['resultado','resultado_2','resultado_3']
+var num_1 = [30, 100, 200]
+var num_2 = [20, 80, 300]
+
+    function sumar(valor1, valor2 id_pag){
+        var resultado = valor1 + valor2;
+        document.getElementById(id_pag).innerHTML="Resultado de Suma: " + resultado
+    }
+
+    
+
+    for (i=0; i<=2; i++){
+        sumar(num_1[i], num_2[i], elementos[i])
+
+
+    }
+
+
+    sumar(30, 20);
+    sumar_2(100, 80);
+
+    
+</script>
+
+
+<div id="resultado"></div>
+
+<script>
+    function sumar(valor1, valor2){
+        var resultado = valor1 + valor2;
+        return resultado;
+
+    }
+
+    document.getElementById("resultado").innerHTML="Resultado de suma:" + sumar(50, 60);
+-->
+<div id ="resultado"></div>
+
+<button onclick="javascript: sumar(20,30);">Sumar</button>
+<script>
+    //Declara la funcion sumar que recibe los parametros y retorna el resultado de la suma
+    function sumar(valor1,valor2){
+        var resultado = valor1 + valor2;
+        return resultado;
+    }
+
+    document.getElementById("resultado").innerHTML= "Resultado de la suma " + sumar(10,10);
+</script>
+
+
+
+
+
 </body>
 
 </html>
