@@ -5,9 +5,10 @@ window.addEventListener("Keydown", (e)=>{
 })
 
 function loguear() {
-    let user=document.getElementById("full_name").value
-    let pass=document.getElementById("password").value
-    let email=document.getElementById("email").value
+    let user=document.getElementById("full_name").value;
+    let pass=document.getElementById("password").value;
+    let email=document.getElementById("email").value;
+    const errorMessage = document.getElementById('error-message');
 
     if (user==="Ricardo Hidalgo" && pass==="1234" && email==="ricardohidalgo2004@gmail.com"){
 
@@ -15,6 +16,13 @@ function loguear() {
     }
 
     else{
-        alert("Datos Incorrectos")
+        errorMessage.style.visibility = 'visible';
     }
+}
+
+
+const errorMessage = document.getElementById('error-message');
+
+if (user==="Ricardo Hidalgo" && pass==="1234" && email==="ricardohidalgo2004@gmail.com"){
+    
 }
