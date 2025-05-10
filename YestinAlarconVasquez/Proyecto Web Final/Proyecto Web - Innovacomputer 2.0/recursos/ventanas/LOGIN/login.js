@@ -19,10 +19,3 @@ function loguear() {
         errorMessage.style.visibility = 'visible';
     }
 }
-
-
-const errorMessage = document.getElementById('error-message');
-
-if (user==="Ricardo Hidalgo" && pass==="1234" && email==="ricardohidalgo2004@gmail.com"){
-    
-}
