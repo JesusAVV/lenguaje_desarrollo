@@ -1,0 +1,202 @@
+.btnconimagen {
+    display:flex;
+    gap: 8px; /* Espacio entre la imagen y el texto */
+    padding: 10px 16px;
+    border: none;
+    background-color: #00ffff4d;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    border-style: solid;
+    border-width: thin;
+    border-color: blue;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none; 
+    margin-left: 250px;
+    margin-right: 250px;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: 1s;
+    position: center;
+}
+.btnconimagen:hover{
+    transform: scale(1.3);
+    transition: 1s;
+}
+.btnconimagen img {
+    width: 20px;
+    height: 20px;
+}
+.cajaproductos{
+    background-color: azure;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.925);
+    overflow: hidden; 
+    font-weight: bold;
+    transition: 1s;
+    border-width: thin;
+}
+.laptops{
+    width: auto;
+    margin: auto;
+    align-items: center;
+    margin-left: 160px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: 1s;
+}
+.laptops:hover{
+    transform: scale(1.3);
+    transition: 1s
+}
+.pcs{
+    margin: auto;
+    width: 8%;
+    height: 10%;
+    align-items: center;
+    margin-left: 145px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    transition: 1s;
+}
+.pcs:hover{
+    transform: scale(1.3);
+    transition: 1s;
+}
+.cajabotones{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    background-color: azure;
+    border-style: solid;
+    border: none;
+    overflow: hidden;
+    height: 55px;
+    border-radius: 6px;
+    border-style: solid;
+    border-color: aqua;
+    border-width: thin;
+}
+.btnvermas {
+    background-color: #00ffff4d;
+    color: azure;
+    padding: 7px 13px;
+    transition: 1s;
+    border-radius: 6px;
+    margin-left: 47%;
+    font-size: 15px;
+    margin-bottom: 25px;
+    border-color: rgb(77, 232, 243);
+    border-width: thin;
+    
+}
+
+.btnvermas:hover{
+    transform: scale(1.1);
+    transition: 1s;
+}
+
+/*:::Boton-Modal:::*/
+.boton-modal{
+    background-color: #00ffff4d;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    padding: 10px 16px;
+    border: solid thin blue;
+    margin: 6px;
+    border-radius: 6px;
+    transition: 1s;
+}
+.boton-modal label{     
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.boton-modal:hover {
+    transform: scale(1.2);
+}
+
+.imagen__carrito {
+    position: relative;
+    left: 0;
+    width:20px;
+    height: 20px;
+}
+/*:::Fin Boton-Modal:::*/
+
+/*:::Ventana Modal:::*/
+#btn-modal{
+    display: none;
+}
+.container-modal{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: rgba(144, 148, 150, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+#btn-modal:checked ~ .container-modal{
+    display: flex;
+}
+.content-modal{
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    position: absolute;
+    right: 0;
+
+}
+.content-modal h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(1500%);
+}
+.content-modal p {
+    padding: 15px 0px;
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+}
+.content-modal .btn-cerrar{
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+.content-modal .btn-cerrar label{
+    padding: 7px 10px;
+    font-size: 30px;
+    background:none;
+    color: #000;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 300ms ease;
+    margin-top: 20px;
+    position: absolute;
+    top: 0;
+}
+.content-modal .btn-cerrar label:hover{
+    color: yellowgreen;
+}
+.cerrar-modal{
+    width:100%;
+    height: 100vh;
+    position: absolute;
+    top:0; left: 0;
+    z-index: -1;
+}
+@media screen and (max-width:800px) {
+    .content-modal{
+        width: 90%;
+    }
+}
