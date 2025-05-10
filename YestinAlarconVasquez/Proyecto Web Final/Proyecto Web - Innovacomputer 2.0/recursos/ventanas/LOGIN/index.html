@@ -7,12 +7,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 <link rel="icon" href="../../fotos/contacto.png">
+<script src="login.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden; background-color: #999; background-image: url(pngwing.com.png);">
     <!--Titulo de la seccion login-->
     <h1 style="text-align: center; font-family: Pixelify Sans; font-size: 70px;">INNOVA COMPUTER</h1>
     <!--Formulario para iniciar sesión-->
-        <form method="post" style="background-color: #3FF3F3; width: 300px; height: 400px; position: relative; left: 50%;">
+        <form onsubmit="return false" autocomplete="off" method="post" style="background-color: #3FF3F3; width: 300px; height: 400px; position: relative; left: 50%;">
             <!--Sing in or Sing up-->
             <h2 style=" padding-top: 20px; text-align: center; font-family: Pixelify Sans;">Sing in or Sing up</h2>
             <!--input full name-->
@@ -33,11 +34,11 @@
                 <input style="width: 100%; padding: 6px 12px; box-sizing: border-box; border: none; background-color: #3FF3F3; border-bottom: 2px #000 solid;" type="email" id="email" placeholder="Enter your email">
             </label>
             </div>
-            <!--boton Sing up-->
+            <!--boton Sing in-->
             <div style="padding: 20px 20px;">
-                <button style="border-radius: 20px; margin-left: 20px; font-family: Pixelify Sans;">Sing up</button>
+                <button value="Entrar" onclick="loguear()" style="border-radius: 20px; margin-left: 20px; font-family: Pixelify Sans;">Sing in</button>
                 <!--boton i´m already account-->
-                <button style="border: none; background-color: #3FF3F3; margin-left: 20px; font-family: Pixelify Sans; border-bottom: 2px solid #000;">i´m already account</button>
+                <button style="border: none; background-color: #3FF3F3; margin-left: 20px; font-family: Pixelify Sans; border-bottom: 2px solid #000;">Create account</button>
             </div>
         </form>
         <!--imagen con mensaje motivador-->
