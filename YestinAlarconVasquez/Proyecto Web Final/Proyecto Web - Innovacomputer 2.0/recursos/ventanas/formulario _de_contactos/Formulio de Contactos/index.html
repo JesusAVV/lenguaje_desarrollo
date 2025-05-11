@@ -1,74 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Contactos (SIMPLE)</title>
+    <title>Formulario de Contacto (SIMPLE)</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-        <h2> 
-            
-        </h2>
-    <form>
-        <h2>
-            FORMULARIO DE CONTACTO
-        </h2>
+    <h2>FORMULARIO DE CONTACTO</h2>
+    <form id="contactForm">
         <fieldset>
-            <legend>INFORMACION BASICA</legend><!--SIMPLE INPUTS-->
+            <legend>INFORMACIÓN BÁSICA</legend>
+
             <div class="form_input">
                 <label>Nombre completo
-                <input name="text" placeholder="Ricardo Hidalgo">
-
-            </label>
+                    <input type="text" name="nombre" placeholder="Ricardo Hidalgo" required>
+                </label>
             </div>
+
             <div class="form_input">
                 <label>Email
-                <input name="email" placeholder="ejemplo@gmail.com">
-            </label>
+                    <input type="email" name="email" placeholder="ejemplo@gmail.com" required>
+                </label>
             </div>
+
             <div class="form_input">
                 <label>Asunto
-                <input name="text" placeholder="El asunto de tu mensaje">
-            </label>
+                    <input type="text" name="asunto" placeholder="El asunto de tu mensaje" required>
+                </label>
             </div>
         </fieldset>
-        <!--SELECT & OPTION-->
+
         <div class="form_input"> 
             <label>Tipo de Documento
-                <select name="type-of-user" aria-label="Selecciona el tipo de usuario">
-                    <option value="user1">DNI</option>
-                    <option value="user2">CARNET DE ESTRANJERIA</option>
-                    <option value="user3">PASAPORTE</option>
-            </select>
-        </label>
-        </div>
-        <!--DATALIST & OPTION-->
-        <div class="form_input">
-            <label>Numero de Documento
-                <input list="referente" name="referente" placeholder="002123947">
-        </label>
-        </div>
-        <div class="form_input" >
-            <label>Numero de Contactos
-                <input list="refencia" name="refencia" placeholder="994444635">
-        </div>
-        <!--TEXTAREA-->
-        <div class="form_input">
-            <label>Mensaje
-            <textarea rows="7" placeholder="Deja tu mensaje"></textarea>
-        </label>
-        </div>
-        <!--CHECKBOX-->
-        <div class="form_input">
-            <label>Acepto terminos y condiciones
-            <input type="checkbox" class="checkbox">
-        </label>
+                <select name="tipo-documento" required>
+                    <option value="">-- Selecciona --</option>
+                    <option value="dni">DNI</option>
+                    <option value="ce">Carnet de extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                </select>
+            </label>
         </div>
 
-        <button type="submit">enviar</button>
+        <div class="form_input">
+            <label>Número de Documento
+                <input type="text" name="num_documento" placeholder="002123947" required>
+            </label>
+        </div>
+
+        <div class="form_input">
+            <label>Número de Contacto
+                <input type="tel" name="telefono" placeholder="994444635" required pattern="[0-9]{9}">
+            </label>
+        </div>
+
+        <div class="form_input">
+            <label>Mensaje
+                <textarea name="mensaje" rows="7" placeholder="Deja tu mensaje" required></textarea>
+            </label>
+        </div>
+
+        <div class="form_input">
+            <label>Acepto términos y condiciones
+                <input type="checkbox" class="checkbox">
+            </label>
+        </div>
+
+        <button type="submit" id="enviar">Enviar</button>
     </form>
-    <a href="../../../../innovacomputer_index.html"> <button type="submit">Inico</button> </a>
-    
+
+    <a href="../../../../innovacomputer_index.html">
+        <button type="button">Inicio</button>
+    </a>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            const form = event.target;
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                alert("Por favor, completa todos los campos correctamente antes de enviar.");
+            } else {
+                alert("Formulario enviado correctamente.");
+            }
+        });
+    </script>
 </body>
 </html>
