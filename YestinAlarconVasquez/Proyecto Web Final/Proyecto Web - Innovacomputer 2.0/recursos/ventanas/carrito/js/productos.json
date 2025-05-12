@@ -1,0 +1,32 @@
+[
+    {
+        "id": "compu-01",
+        "titulo": "Compu 1",
+        "imagen": "./img/PC1.png",
+        "categoria": {
+            "nombre": "compu",
+            "id": "compu"
+        },
+        "precio": 1999
+    },
+    {
+        "id": "compu-02",
+        "titulo": "Compu 2",
+        "imagen": "./img/PC2.png",
+        "categoria": {
+            "nombre": "compu",
+            "id": "compu"
+        },
+        "precio": 1999
+    },
+    {
+        "id": "compu-03",
+        "titulo": "Compu 3",
+        "imagen": "./img/PC3.png",
+        "categoria": {
+            "nombre": "compu",
+            "id": "compu"
+        },
+        "precio": 2999
+    }
+]

@@ -1,0 +1,15 @@
+body{
+    background-image: url(gif/fondo.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.TRABAJO{
+    display: flex;
+}
+
+.TRABAJO2{
+    display: flex;
+}
