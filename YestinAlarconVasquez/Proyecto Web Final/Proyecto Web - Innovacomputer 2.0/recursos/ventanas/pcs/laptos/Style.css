@@ -1,0 +1,19 @@
+body{
+    background-image: url(gif/yes.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+*{
+    padding: 10px;
+    margin: 10px;
+    margin-left: 50px;
+}
+
+.flex-container{
+    display: flex;
+}
+.flex-container2{
+    display: flex;
+}
