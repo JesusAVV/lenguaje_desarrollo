@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema LBTR - Liquidacion Bruta en Tiempo Real</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h1>Sistema LBTR</h1>
+                <p>Liquidacion Bruta en Tiempo Real</p>
+                <span class="login-subtitle">Banco Central de Reserva del Peru</span>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="loginUser"><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="loginUser" placeholder="Ingrese su usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPass"><i class="fas fa-lock"></i> Contrasena</label>
+                    <input type="password" id="loginPass" placeholder="Ingrese su contrasena" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginEntity"><i class="fas fa-building"></i> Entidad</label>
+                    <select id="loginEntity" required>
+                        <option value="">Seleccione entidad</option>
+                        <option value="BCRP">BCRP - Banco Central de Reserva</option>
+                        <option value="BCP">BCP - Banco de Credito del Peru</option>
+                        <option value="BBVA">BBVA Peru</option>
+                        <option value="IBK">Interbank</option>
+                        <option value="SBN">Scotiabank Peru</option>
+                        <option value="BIF">BanBif</option>
+                        <option value="MBK">Mibanco</option>
+                        <option value="PICHINCHA">Banco Pichincha</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Ingresar al Sistema
+                </button>
+                <p class="login-hint">Demo: usuario <strong>admin</strong> / contrasena <strong>admin</strong></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h2>Sistema LBTR</h2>
+                <p>BCRP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li data-section="participantes">
+                    <i class="fas fa-building"></i>
+                    <span>Participantes</span>
+                </li>
+                <li data-section="transferencias">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transferencias</span>
+                </li>
+                <li data-section="liquidez">
+                    <i class="fas fa-wallet"></i>
+                    <span>Liquidez</span>
+                </li>
+                <li data-section="cola">
+                    <i class="fas fa-list-ol"></i>
+                    <span>Cola de Operaciones</span>
+                </li>
+                <li data-section="forex">
+                    <i class="fas fa-coins"></i>
+                    <span>Moneda Extranjera</span>
+                </li>
+                <li data-section="reportes">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reportes</span>
+                </li>
+                <li data-section="auditoria">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Auditoria</span>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-dot active"></span>
+                    <span>Sistema Operativo</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="toggleSidebar" class="toggle-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb" id="breadcrumb">
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+                <div class="topbar-center">
+                    <div class="system-clock">
+                        <i class="fas fa-clock"></i>
+                        <span id="systemClock">--:--:--</span>
+                        <span class="clock-date" id="systemDate">--/--/----</span>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notifBadge">0</span>
+                    </div>
+                    <div class="user-info">
+                        <span id="userDisplayName">Administrador</span>
+                        <span id="userEntity" class="entity-badge">BCRP</span>
+                    </div>
+                    <button id="logoutBtn" class="btn-logout" title="Cerrar Sesion">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area" id="contentArea">
+                <!-- Dashboard Section -->
+                <section id="section-dashboard" class="section active">
+                    <div class="section-header">
+                        <h1>Dashboard - Vista General del Sistema</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" onclick="LBTR.refreshDashboard()">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon blue"><i class="fas fa-exchange-alt"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiTotalTx">0</h3>
+                                <p>Transacciones Hoy</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon green"><i class="fas fa-check-circle"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiLiquidadas">0</h3>
+                                <p>Liquidadas</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon orange"><i class="fas fa-clock"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiPendientes">0</h3>
+                                <p>En Cola</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon red"><i class="fas fa-times-circle"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiRechazadas">0</h3>
+                                <p>Rechazadas</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon purple"><i class="fas fa-money-bill-wave"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiMontoTotal">S/ 0.00</h3>
+                                <p>Monto Total Liquidado</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon teal"><i class="fas fa-building"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="kpiParticipantes">0</h3>
+                                <p>Participantes Activos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> Transacciones por Hora</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" id="chartHourly"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie"></i> Distribucion por Estado</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" id="chartStatus"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Ultimas Transacciones</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="recentTxTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Hora</th>
+                                            <th>Ordenante</th>
+                                            <th>Beneficiario</th>
+                                            <th>Monto (S/)</th>
+                                            <th>Estado</th>
+                                            <th>Prioridad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentTxBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Participantes Section -->
+                <section id="section-participantes" class="section">
+                    <div class="section-header">
+                        <h1>Gestion de Participantes</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.showAddParticipant()">
+                                <i class="fas fa-plus"></i> Nuevo Participante
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-building"></i> Entidades Financieras Registradas</h3>
+                            <div class="card-actions">
+                                <input type="text" id="searchParticipant" class="search-input" placeholder="Buscar participante...">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="participantsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Entidad</th>
+                                            <th>RUC</th>
+                                            <th>Tipo</th>
+                                            <th>Saldo PEN (S/)</th>
+                                            <th>Saldo USD ($)</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="participantsBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transferencias Section -->
+                <section id="section-transferencias" class="section">
+                    <div class="section-header">
+                        <h1>Transferencias Interbancarias</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.showNewTransfer()">
+                                <i class="fas fa-paper-plane"></i> Nueva Transferencia
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Form -->
+                    <div class="card" id="transferForm" style="display:none;">
+                        <div class="card-header">
+                            <h3><i class="fas fa-paper-plane"></i> Registrar Nueva Transferencia</h3>
+                            <button class="btn-close" onclick="LBTR.hideTransferForm()">&times;</button>
+                        </div>
+                        <div class="card-body">
+                            <form id="newTransferForm" class="form-grid">
+                                <div class="form-group">
+                                    <label>Banco Ordenante</label>
+                                    <select id="txOrdenante" required>
+                                        <option value="">Seleccione banco ordenante</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Banco Beneficiario</label>
+                                    <select id="txBeneficiario" required>
+                                        <option value="">Seleccione banco beneficiario</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Moneda</label>
+                                    <select id="txMoneda" required>
+                                        <option value="PEN">PEN - Sol</option>
+                                        <option value="USD">USD - Dolar</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Monto</label>
+                                    <input type="number" id="txMonto" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prioridad</label>
+                                    <select id="txPrioridad" required>
+                                        <option value="NORMAL">Normal</option>
+                                        <option value="URGENTE">Urgente</option>
+                                        <option value="CRITICA">Critica</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Concepto</label>
+                                    <select id="txConcepto" required>
+                                        <option value="INTERBANCARIA">Transferencia Interbancaria</option>
+                                        <option value="COMPENSACION">Compensacion</option>
+                                        <option value="VALORES">Liquidacion de Valores</option>
+                                        <option value="PRESTAMO">Prestamo Interbancario</option>
+                                        <option value="ENCAJE">Operacion de Encaje</option>
+                                        <option value="POLITICA_MONETARIA">Politica Monetaria</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Referencia / Descripcion</label>
+                                    <input type="text" id="txReferencia" placeholder="Referencia de la operacion" required>
+                                </div>
+                                <div class="form-actions full-width">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-check"></i> Enviar Transferencia
+                                    </button>
+                                    <button type="button" class="btn btn-outline" onclick="LBTR.hideTransferForm()">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-filter"></i> Filtros</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label>Estado</label>
+                                    <select id="filterStatus">
+                                        <option value="">Todos</option>
+                                        <option value="LIQUIDADA">Liquidada</option>
+                                        <option value="PENDIENTE">Pendiente</option>
+                                        <option value="EN_COLA">En Cola</option>
+                                        <option value="RECHAZADA">Rechazada</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Moneda</label>
+                                    <select id="filterCurrency">
+                                        <option value="">Todas</option>
+                                        <option value="PEN">PEN</option>
+                                        <option value="USD">USD</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Prioridad</label>
+                                    <select id="filterPriority">
+                                        <option value="">Todas</option>
+                                        <option value="NORMAL">Normal</option>
+                                        <option value="URGENTE">Urgente</option>
+                                        <option value="CRITICA">Critica</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <button class="btn btn-primary" onclick="LBTR.filterTransactions()">
+                                        <i class="fas fa-search"></i> Filtrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list"></i> Registro de Transferencias</h3>
+                            <span class="record-count" id="txCount">0 registros</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="transfersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Operacion</th>
+                                            <th>Fecha/Hora</th>
+                                            <th>Ordenante</th>
+                                            <th>Beneficiario</th>
+                                            <th>Moneda</th>
+                                            <th>Monto</th>
+                                            <th>Concepto</th>
+                                            <th>Prioridad</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transfersBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Liquidez Section -->
+                <section id="section-liquidez" class="section">
+                    <div class="section-header">
+                        <h1>Gestion de Liquidez</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.showDepositForm()">
+                                <i class="fas fa-plus-circle"></i> Deposito
+                            </button>
+                            <button class="btn btn-outline" onclick="LBTR.showWithdrawForm()">
+                                <i class="fas fa-minus-circle"></i> Retiro
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Liquidity Summary -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon green"><i class="fas fa-money-bill-wave"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="totalLiqPEN">S/ 0.00</h3>
+                                <p>Liquidez Total del Sistema (PEN)</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon blue"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="totalLiqUSD">$ 0.00</h3>
+                                <p>Liquidez Total del Sistema (USD)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit/Withdraw Form -->
+                    <div class="card" id="liquidityForm" style="display:none;">
+                        <div class="card-header">
+                            <h3 id="liquidityFormTitle"><i class="fas fa-wallet"></i> Operacion de Liquidez</h3>
+                            <button class="btn-close" onclick="LBTR.hideLiquidityForm()">&times;</button>
+                        </div>
+                        <div class="card-body">
+                            <form id="liqForm" class="form-grid">
+                                <input type="hidden" id="liqType" value="DEPOSITO">
+                                <div class="form-group">
+                                    <label>Participante</label>
+                                    <select id="liqParticipant" required>
+                                        <option value="">Seleccione participante</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Moneda</label>
+                                    <select id="liqCurrency" required>
+                                        <option value="PEN">PEN - Sol</option>
+                                        <option value="USD">USD - Dolar</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Monto</label>
+                                    <input type="number" id="liqAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Motivo</label>
+                                    <input type="text" id="liqReason" placeholder="Motivo de la operacion" required>
+                                </div>
+                                <div class="form-actions full-width">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-check"></i> Confirmar Operacion
+                                    </button>
+                                    <button type="button" class="btn btn-outline" onclick="LBTR.hideLiquidityForm()">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Balances Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-balance-scale"></i> Saldos por Participante</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="balancesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Entidad</th>
+                                            <th>Saldo PEN (S/)</th>
+                                            <th>Saldo USD ($)</th>
+                                            <th>Linea de Credito (S/)</th>
+                                            <th>Disponible Total (S/)</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="balancesBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liquidity Operations History -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Historial de Operaciones de Liquidez</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha/Hora</th>
+                                            <th>Tipo</th>
+                                            <th>Participante</th>
+                                            <th>Moneda</th>
+                                            <th>Monto</th>
+                                            <th>Motivo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="liqHistoryBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cola de Operaciones Section -->
+                <section id="section-cola" class="section">
+                    <div class="section-header">
+                        <h1>Cola de Operaciones</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.processQueue()">
+                                <i class="fas fa-play"></i> Procesar Cola
+                            </button>
+                            <button class="btn btn-outline" onclick="LBTR.clearQueue()">
+                                <i class="fas fa-trash"></i> Limpiar Rechazadas
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Queue Stats -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon orange"><i class="fas fa-hourglass-half"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="queuePending">0</h3>
+                                <p>Pendientes en Cola</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon blue"><i class="fas fa-money-bill"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="queueAmount">S/ 0.00</h3>
+                                <p>Monto en Cola</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="queueUrgent">0</h3>
+                                <p>Operaciones Urgentes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Queue Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list-ol"></i> Operaciones en Cola (Ordenadas por Prioridad)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="queueTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Posicion</th>
+                                            <th>ID Operacion</th>
+                                            <th>Hora Ingreso</th>
+                                            <th>Ordenante</th>
+                                            <th>Beneficiario</th>
+                                            <th>Monto</th>
+                                            <th>Prioridad</th>
+                                            <th>Motivo Espera</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="queueBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Moneda Extranjera Section -->
+                <section id="section-forex" class="section">
+                    <div class="section-header">
+                        <h1>Operaciones de Moneda Extranjera</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.showForexForm()">
+                                <i class="fas fa-exchange-alt"></i> Nueva Operacion Forex
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exchange Rate Info -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon green"><i class="fas fa-arrow-up"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="forexBuy">S/ 3.720</h3>
+                                <p>Tipo de Cambio Compra (PEN/USD)</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card wide">
+                            <div class="kpi-icon red"><i class="fas fa-arrow-down"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="forexSell">S/ 3.760</h3>
+                                <p>Tipo de Cambio Venta (PEN/USD)</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon blue"><i class="fas fa-chart-line"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="forexOps">0</h3>
+                                <p>Operaciones Hoy</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon purple"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="kpi-content">
+                                <h3 id="forexVolume">$ 0.00</h3>
+                                <p>Volumen Negociado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forex Form -->
+                    <div class="card" id="forexForm" style="display:none;">
+                        <div class="card-header">
+                            <h3><i class="fas fa-exchange-alt"></i> Nueva Operacion de Compra/Venta de Moneda Extranjera</h3>
+                            <button class="btn-close" onclick="LBTR.hideForexForm()">&times;</button>
+                        </div>
+                        <div class="card-body">
+                            <form id="newForexForm" class="form-grid">
+                                <div class="form-group">
+                                    <label>Tipo de Operacion</label>
+                                    <select id="fxType" required onchange="LBTR.updateForexCalc()">
+                                        <option value="COMPRA">Compra de USD</option>
+                                        <option value="VENTA">Venta de USD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Banco Comprador</label>
+                                    <select id="fxBuyer" required>
+                                        <option value="">Seleccione banco</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Banco Vendedor</label>
+                                    <select id="fxSeller" required>
+                                        <option value="">Seleccione banco</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Monto USD</label>
+                                    <input type="number" id="fxAmountUSD" step="0.01" min="0.01" placeholder="0.00" required oninput="LBTR.updateForexCalc()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de Cambio</label>
+                                    <input type="number" id="fxRate" step="0.001" min="0.001" placeholder="3.740" required oninput="LBTR.updateForexCalc()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Equivalente PEN</label>
+                                    <input type="text" id="fxAmountPEN" readonly placeholder="Calculado automaticamente">
+                                </div>
+                                <div class="form-actions full-width">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-check"></i> Registrar Operacion
+                                    </button>
+                                    <button type="button" class="btn btn-outline" onclick="LBTR.hideForexForm()">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Forex Operations Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list"></i> Registro de Operaciones Forex</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Fecha/Hora</th>
+                                            <th>Tipo</th>
+                                            <th>Comprador</th>
+                                            <th>Vendedor</th>
+                                            <th>Monto USD</th>
+                                            <th>Tipo Cambio</th>
+                                            <th>Monto PEN</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="forexBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reportes Section -->
+                <section id="section-reportes" class="section">
+                    <div class="section-header">
+                        <h1>Reportes y Estadisticas</h1>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="LBTR.generateReport()">
+                                <i class="fas fa-file-pdf"></i> Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Report Selection -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cog"></i> Configuracion del Reporte</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label>Tipo de Reporte</label>
+                                    <select id="reportType">
+                                        <option value="diario">Reporte Diario de Operaciones</option>
+                                        <option value="participante">Reporte por Participante</option>
+                                        <option value="liquidez">Reporte de Liquidez</option>
+                                        <option value="forex">Reporte de Moneda Extranjera</option>
+                                        <option value="resumen">Resumen Ejecutivo</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Fecha Inicio</label>
+                                    <input type="date" id="reportDateFrom">
+                                </div>
+                                <div class="filter-group">
+                                    <label>Fecha Fin</label>
+                                    <input type="date" id="reportDateTo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Output -->
+                    <div class="card" id="reportOutput" style="display:none;">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-alt"></i> <span id="reportTitle">Reporte</span></h3>
+                            <div class="card-actions">
+                                <button class="btn btn-outline btn-sm" onclick="LBTR.printReport()">
+                                    <i class="fas fa-print"></i> Imprimir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" id="reportContent">
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-bar"></i> Top Participantes por Volumen</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" id="chartTopParticipants"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-area"></i> Tendencia de Montos</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" id="chartAmountTrend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Auditoria Section -->
+                <section id="section-auditoria" class="section">
+                    <div class="section-header">
+                        <h1>Auditoria y Seguridad</h1>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-shield-alt"></i> Log de Auditoria del Sistema</h3>
+                            <div class="card-actions">
+                                <select id="auditFilter" onchange="LBTR.filterAuditLog()">
+                                    <option value="">Todos los eventos</option>
+                                    <option value="LOGIN">Inicios de sesion</option>
+                                    <option value="TRANSFERENCIA">Transferencias</option>
+                                    <option value="LIQUIDEZ">Operaciones de liquidez</option>
+                                    <option value="FOREX">Operaciones Forex</option>
+                                    <option value="SISTEMA">Eventos del sistema</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Tipo</th>
+                                            <th>Usuario</th>
+                                            <th>Entidad</th>
+                                            <th>Descripcion</th>
+                                            <th>IP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="auditBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="btn-close" onclick="LBTR.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notif-header">
+            <h3>Notificaciones</h3>
+            <button class="btn-close" onclick="LBTR.toggleNotifications()">&times;</button>
+        </div>
+        <div class="notif-list" id="notifList">
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
